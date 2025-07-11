@@ -1,0 +1,14 @@
+.student-popup {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.student-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid #dee2e6;
+  margin-bottom: 10px;
+}
