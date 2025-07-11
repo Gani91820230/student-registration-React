@@ -1,12 +1,12 @@
 
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './Pages/LoginPage';
 import RegisterPage from './Pages/RegisterPage';
 import StudentList from './Pages/StudentList';
 
 function App() {
-  const [isLoggedIn] = useState(true); // Update based on actual login logic
+  
 
   return (
     <Router>
