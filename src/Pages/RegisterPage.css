@@ -105,3 +105,8 @@
 .image-upload-row {
     margin-top: 30px;
 }
+.Toastify__toast-theme--colored.Toastify__toast--error {
+    color: var(--toastify-text-color-error);
+    background: hsl(6, 78%, 56%);
+    margin-top:55px;
+}

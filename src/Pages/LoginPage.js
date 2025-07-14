@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginPage.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import eduImage from '../images/edu2.webp';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
   const [username, setUsername] = useState('');
@@ -10,7 +12,6 @@ export default function LoginPage() {
   const [captcha, setCaptcha] = useState('');
   const [inputCaptcha, setInputCaptcha] = useState('');
   const [showPwd, setShowPwd] = useState(false);
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const generateCaptcha = () => {
@@ -22,44 +23,73 @@ export default function LoginPage() {
     setCaptcha(code);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     generateCaptcha();
   }, []);
 
+  const showError = (message) => {
+    toast.error(message, {
+      position: 'top-right',
+      autoClose: 4000,
+      hideProgressBar: false,
+      theme: 'colored',
+    });
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
-    if (
-      username === 'admin' &&
-      password === 'admin123' &&
-      inputCaptcha === captcha
-    ) {
-      navigate('/register');
-    } else {
-      setError('Invalid Username, Password or Captcha!');
+
+    // ✅ Validate Empty Fields
+    if (!username.trim()) {
+      showError('Username is required');
+      return;
+    }
+    if (!password.trim()) {
+      showError('Password is required');
+      return;
+    }
+    if (!inputCaptcha.trim()) {
+      showError('Captcha is required');
+      return;
+    }
+
+    // ✅ Validate Credentials & Captcha
+    if (username !== 'admin' || password !== 'admin123') {
+      showError('Invalid Username or Password');
       generateCaptcha();
       setInputCaptcha('');
+      return;
     }
+    if (inputCaptcha !== captcha) {
+      showError('Captcha does not match');
+      generateCaptcha();
+      setInputCaptcha('');
+      return;
+    }
+
+    // ✅ Success
+    navigate('/register');
   };
 
   return (
     <div className="split-container">
+      <ToastContainer />
       <div className="left-panel">
         <div className="info-box">
           <h1>🎓 Welcome to Education Portal</h1>
           <p>Your one-stop solution for student management.</p>
-          <img src={eduImage} alt="EduPortal" className="login-image"  />
+          <img src={eduImage} alt="EduPortal" className="login-image" />
         </div>
       </div>
       <div className="right-panel">
-         <form className="login-form" onSubmit={handleLogin} autoComplete="off">
+        <form className="login-form" onSubmit={handleLogin} autoComplete="off">
           <h2>🔐 Login</h2>
-          {error && <div className="error-msg">{error}</div>}
+
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            required
           />
           <div className="password-box">
             <input
@@ -67,28 +97,27 @@ export default function LoginPage() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
             <span onClick={() => setShowPwd(!showPwd)}>
               {showPwd ? <FaEyeSlash /> : <FaEye />}
             </span>
           </div>
+
           <div className="captcha-box">
             <span>{captcha}</span>
             <button type="button" onClick={generateCaptcha}>↻</button>
           </div>
+
           <input
             type="text"
             placeholder="Enter Captcha"
             value={inputCaptcha}
             onChange={(e) => setInputCaptcha(e.target.value)}
-            required
           />
+
           <button type="submit">Login</button>
         </form>
-       
       </div>
     </div>
   );
 }
-
