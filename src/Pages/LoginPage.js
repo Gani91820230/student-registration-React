@@ -77,7 +77,7 @@ export default function LoginPage() {
       <div className="left-panel">
         <div className="info-box">
           <h1>🎓 Welcome to Education Portal</h1>
-          <p>Your one-stop solution for student management.</p>
+          
           <img src={eduImage} alt="EduPortal" className="login-image" />
         </div>
       </div>
